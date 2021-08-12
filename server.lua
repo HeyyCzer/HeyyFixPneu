@@ -1,9 +1,3 @@
--- RegisterServerEvent("FixPneu:SyncToClient")
--- AddEventHandler("FixPneu:SyncToClient", function(client, tireIndex)
-	-- TriggerClientEvent("FixPneu:forceSync", client, tireIndex)
--- end)
-
-
 local Tunnel = module("vrp","lib/Tunnel")
 local Proxy = module("vrp","lib/Proxy")
 vRP = Proxy.getInterface("vRP")
@@ -45,3 +39,8 @@ function heyyczer.usePneu()
 	TriggerClientEvent("Notify",source,"negado","Você precisa de <b>" .. heyyCfg.itemAmount .. "x " .. vRP.itemNameList(heyyCfg.itemIndex) .. "</b> para isto!")
 	return false
 end
+
+RegisterServerEvent("FixPneu:SyncToClient")
+AddEventHandler("FixPneu:SyncToClient", function(client, tireIndex)
+	TriggerClientEvent("FixPneu:forceSync", client, tireIndex)
+end)
