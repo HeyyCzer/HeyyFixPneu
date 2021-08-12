@@ -41,6 +41,6 @@ function heyyczer.usePneu()
 end
 
 RegisterServerEvent("FixPneu:SyncToClient")
-AddEventHandler("FixPneu:SyncToClient", function(client, tireIndex)
-	TriggerClientEvent("FixPneu:forceSync", client, tireIndex)
+AddEventHandler("FixPneu:SyncToClient", function(netVeh, tireIndex)
+	TriggerClientEvent("FixPneu:forceSync", -1, netVeh, tireIndex)
 end)
