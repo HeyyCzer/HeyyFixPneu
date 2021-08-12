@@ -45,7 +45,8 @@ Citizen.CreateThread(function()
 							Citizen.Wait(heyyCfg.repairDuration)
 
 							SetVehicleTyreFixed(vehicle, closestTire.tireIndex)
-							
+							TriggerServerEvent("FixPneu:SyncToClient", VehToNet(vehicle), closestTire.tireIndex)
+								
 							TriggerEvent("Notify","sucesso","Você reparou o <b>Pneu</b> com sucesso!")
 							Citizen.Wait(1000)
 							ClearPedTasks(plyPed) -- Immediately
@@ -114,6 +115,12 @@ function GetClosestVehicleTire(vehicle)
 
 	return closestTire
 end
+
+RegisterNetEvent("FixPneu:forceSync")
+AddEventHandler("FixPneu:forceSync", function(netVeh, tyre)
+	SetVehicleTyreFixed(NetToVeh(netVeh), tyre)	
+end)
+
 
 function Draw3DText(x,y,z,text)
 	local onScreen,_x,_y = World3dToScreen2d(x,y,z)
