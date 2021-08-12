@@ -8,14 +8,9 @@ local containsPneu = not heyyCfg.needsPneu
 
 Citizen.CreateThread(function()
 	Citizen.Wait(1000)
-	
 	while true do
-		if not GetCurrentResourceName() == "heyy_fixpneu" then
-			return
-		end
-		
-		local player = PlayerId()
-		local plyPed = GetPlayerPed(player)
+		local idle = 3000
+		local plyPed = GetPlayerPed(-1)
 		local vehicle = GetClosestVehicleToPlayer()
 		
 		local animDict = "amb@medic@standing@kneel@idle_a"
@@ -28,6 +23,7 @@ Citizen.CreateThread(function()
 			local closestTire = GetClosestVehicleTire(vehicle)
 			if closestTire ~= nil and hasPermission and containsPneu then
 				if IsVehicleTyreBurst(vehicle, closestTire.tireIndex, 0) then
+					idle = 5
 					Draw3DText(closestTire.bonePos.x, closestTire.bonePos.y, closestTire.bonePos.z, "~g~[E] ~w~Reparar pneu")
 					if IsControlJustPressed(1, 38) then
 						RequestAnimDict(animDict)
@@ -55,21 +51,15 @@ Citizen.CreateThread(function()
 							ClearPedTasks(plyPed) -- Immediately
 						end
 					end
-				else
-					Citizen.Wait(1000)
 				end
-			else
-				Citizen.Wait(1000)
 			end
-		else
-			Citizen.Wait(3000)
 		end
-		Citizen.Wait(5)
+		Citizen.Wait(idle)
 	end
 end)
 
 Citizen.CreateThread(function()
-	while true do
+	while heyyCfg.needsPneu == true or heyyCfg.needsPermission == true do
 		if heyyCfg.needsPneu then containsPneu = heyyczer.containsPneu() end
 		if heyyCfg.needsPermission then hasPermission = heyyczer.hasPermission() end
 		Citizen.Wait(5000)
